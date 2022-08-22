@@ -22,7 +22,7 @@ class MySQLDB(DatabaseInterface, ABC):
                 print('[ERROR] ' + str(e))
             exit(0)
 
-    def query_get_data(self, query: str, params: tuple = ()) -> tuple:
+    def query_get_data(self, query: str, params: tuple = ()) -> list[tuple]:
         try:
             with self.mysql_connector.cursor() as cur:
                 cur.execute(query, params)
