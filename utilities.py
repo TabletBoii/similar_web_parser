@@ -66,7 +66,7 @@ def insert_country_ranks_to_database(mysql_instance: MySQLDB, resource_id: int, 
                                                            status))
 
 
-def insert_multiple_country_ranks_to_database(mysql_instance: MySQLDB, RESOURCE_ID: int, top_countries_list: list,
+def insert_multiple_country_ranks_to_database(mysql_instance: MySQLDB, RESOURCE_ID: int, top_countries_list: tuple,
                                               status: str):
     insert_country_ranks_to_database(mysql_instance, RESOURCE_ID, 1, top_countries_list[0][0],
                                      top_countries_list[0][1],
@@ -130,8 +130,9 @@ def select_element_by_top(browser_driver: webdriver, css_selector: str) -> tuple
 def get_metrics_from_html(page_str: BeautifulSoup) -> tuple[list[str], list[str]]:
     top_country_names: list = page_str.find_all(['span', 'a'], class_='wa-geography__country-name')
     top_country_values: list = page_str.find_all('span', class_='wa-geography__country-traffic-value')
+    not_found_elements: list = page_str.find_all('p', class_='search-results__no-data-title')
     top_countries_list: list[tuple] = list()
     for i in range(len(top_country_values)):
         top_countries_list.append((top_country_names[i].getText(), top_country_values[i].getText()))
 
-    return top_countries_list
+    return top_countries_list, not_found_elements
